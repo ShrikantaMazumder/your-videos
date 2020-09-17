@@ -1,9 +1,14 @@
 import React from 'react';
+import classes from './VideoItem.module.css';
 
-const VideoItem = () => {
+const VideoItem = ({ video, onVideoSelect }) => {
+    const { snippet: {title, thumbnails: { medium: { url } }} } = video;
     return (
-        <div>
-            <h1>Video item</h1>
+        <div onClick={() => onVideoSelect(video)} className={[classes.videoItem, 'item' ].join(' ')}>
+            <img className="ui image" src={url} alt=""/>
+            <div className="content">
+                <div className="header"> {title} </div>
+            </div>
         </div>
     );
 };
