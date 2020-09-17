@@ -2,6 +2,7 @@ import React from 'react';
 import SearchBar from './SearchBar/SearchBar';
 import youtube from '../apis/youtube';
 import VideoList from './VideoList/VideoList';
+import VideoDetail from './VideoDetail/VideoDetail';
 
 const KEY = 'AIzaSyD2p16pp-UjRMEE0W7BxKuuXMXu3GmhxrU';
 
@@ -17,18 +18,34 @@ class App extends React.Component {
                 key: KEY
             }
         });
-        this.setState({ videos: response.data.items });
+        this.setState({ 
+            videos: response.data.items,
+            selectedVideo: response.data.items[0]
+        });
     };
 
+    componentDidMount() {
+        this.onSearchSubmit('');
+    }
+
     onVideoSelect = (video) => {
-        console.log('Selected video', video)
+        this.setState({ selectedVideo: video })
     };
 
     render(){
         return (
             <div className="ui container">
                 <SearchBar onSearchSubmit={this.onSearchSubmit} />
-                <VideoList videos={this.state.videos} onVideoSelect={this.onVideoSelect} />
+                <div className="ui grid">
+                    <div className="ui row">
+                        <div className="eleven wide column">
+                            <VideoDetail video={this.state.selectedVideo} />
+                        </div>
+                        <div className="five wide column">
+                            <VideoList videos={this.state.videos} onVideoSelect={this.onVideoSelect} />
+                        </div>
+                    </div>
+                </div>
             </div>
         );
     }
